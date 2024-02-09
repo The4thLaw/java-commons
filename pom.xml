@@ -19,13 +19,13 @@
 	</licenses>
 
 	<issueManagement>
-		<url>https://github.com/The4thLaw/java-utils/issues</url>
+		<url>https://github.com/The4thLaw/java-commons/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 
 	<scm>
-		<url>https://github.com/The4thLaw/java-utils</url>
-		<connection>scm:git:git://github.com/The4thLaw/java-utils.git</connection>
+		<url>https://github.com/The4thLaw/java-commons</url>
+		<connection>scm:git:git://github.com/The4thLaw/java-commons.git</connection>
 	</scm>
 
 	<!-- See
@@ -34,7 +34,7 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/the4thlaw/java-utils</url>
+			<url>https://maven.pkg.github.com/the4thlaw/java-commons</url>
 		</repository>
 	</distributionManagement>
 
