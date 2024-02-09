@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Maven install (skip tests)",
+            "type": "shell",
+            "command": "./mvnw -B install -DskipTests",
+            "group": "build"
+        },
+        {
+            "label": "Maven install",
+            "type": "shell",
+            "command": "./mvnw -B install",
+            "group": "build"
+        },
+        {
+            "label": "Maven clean",
+            "type": "shell",
+            "command": "./mvnw -B clean",
+            "group": "build"
+        },
+        {
+            "label": "Maven check dependencies",
+            "type": "shell",
+            "command": "./mvnw -B site -Pcheck-deps -DskipTests -U",
+            "group": "build"
+        },
+    ]
+}

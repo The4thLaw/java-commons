@@ -1,0 +1,168 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.the4thlaw</groupId>
+	<artifactId>java-commons</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+	<name>The4thLaw Utils</name>
+	<description>Common utilities for Java projects at https://github.com/The4thLaw/</description>
+	<inceptionYear>2024</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>Mozilla Public License Version 2.0</name>
+			<url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+			<distribution>manual</distribution>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<url>https://github.com/The4thLaw/java-utils/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<scm>
+		<url>https://github.com/The4thLaw/java-utils</url>
+		<connection>scm:git:git://github.com/The4thLaw/java-utils.git</connection>
+	</scm>
+
+	<!-- See
+	https://docs.github.com/en/actions/publishing-packages/publishing-java-packages-with-maven#publishing-packages-to-github-packages -->
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/the4thlaw/java-utils</url>
+		</repository>
+	</distributionManagement>
+
+	<developers>
+		<developer>
+			<id>xr</id>
+			<name>Xavier 'Xr' Dalem</name>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.rootdir>${project.basedir}</project.rootdir>
+	</properties>
+
+	<modules>
+		<module>common-utils</module>
+		<module>h2-utils</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>2.0.12</version>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.15.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>2.2.224</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>5.10.2</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-core</artifactId>
+				<version>3.25.3</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.12.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.3.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>3.6.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>3.1.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>3.5.0</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.12.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.2.5</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>check-deps</id>
+			<!-- Run with e.g. mvn clean site -Pcheck-deps -DskipTests -U -->
+			<reporting>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>2.16.2</version>
+						<configuration>
+							<rulesUri>file://${project.rootdir}/.config/maven-version-rules.xml</rulesUri>
+						</configuration>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>dependency-updates-report</report>
+									<report>plugin-updates-report</report>
+									<report>property-updates-report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
+		</profile>
+	</profiles>
+</project>

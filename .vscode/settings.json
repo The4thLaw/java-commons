@@ -1,0 +1,40 @@
+{
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+
+    "editor.tabSize": 4,
+
+    "java.configuration.updateBuildConfiguration": "interactive",
+
+    "java.checkstyle.configuration": ".config/checkstyle-config.xml",
+    "java.format.settings.url": ".config/eclipse-formatter.xml",
+
+    "files.watcherExclude": {
+        "**/target/**": true
+    },
+    "search.exclude": {
+        "**/target": true
+    },
+    "files.eol": "\n",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.cleanup.actionsOnSave": [
+        "addOverride",
+        "addDeprecated"
+    ],
+    "java.completion.guessMethodArguments": "auto",
+    "java.saveActions.organizeImports": true,
+    "java.completion.importOrder": [
+        "java",
+        "javax",
+        "#",
+        "org.the4thlaw",
+        ""
+    ],
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    }
+}
