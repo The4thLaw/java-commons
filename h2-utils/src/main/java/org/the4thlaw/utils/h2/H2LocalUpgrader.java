@@ -49,7 +49,7 @@ public class H2LocalUpgrader {
 		if (versionsDirectory == null) {
 			throw new H2MigrationException("Missing system property: t4l.utils.h2.legacyJarDirectory");
 		}
-		this.versionsDirectory = validateVersionsDirectory(Path.of(versionsDirectory));
+		this.versionsDirectory = validateVersionsDirectory(Paths.get(versionsDirectory));
 	}
 
 	/**
