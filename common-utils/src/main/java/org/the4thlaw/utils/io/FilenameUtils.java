@@ -1,5 +1,6 @@
 package org.the4thlaw.utils.io;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -19,7 +20,7 @@ public final class FilenameUtils {
 	 * </p>
 	 * 
 	 * @param fileName The name of the file.
-	 * @return The extension, or {@code null} if there was no extension.
+	 * @return The lowercase extension, or {@code null} if there was no extension.
 	 */
 	public static String getFileExtension(String fileName) {
 		if (fileName == null) {
@@ -29,6 +30,6 @@ public final class FilenameUtils {
 		if (baseExt.isEmpty()) {
 			return null;
 		}
-		return FILE_EXT_EXCLUSIONS.matcher(baseExt).replaceAll("");
+		return FILE_EXT_EXCLUSIONS.matcher(baseExt).replaceAll("").toLowerCase(Locale.ROOT);
 	}
 }

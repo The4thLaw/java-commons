@@ -10,11 +10,15 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for {@link ImageUtils}.
  */
-public class FilenameUtilsTest {
+class FilenameUtilsTest {
     @Test
-    public void testGetFileExtension() {
+    void testGetFileExtension() {
         assertThat(getFileExtension("foo.jpg")).isEqualTo("jpg");
+        assertThat(getFileExtension("foo.JPG")).isEqualTo("jpg");
         assertThat(getFileExtension("foo./etc/passwd")).isNull();
+        assertThat(getFileExtension("foo.mp3")).isEqualTo("mp3");
+		assertThat(getFileExtension("foo.mp3$")).isEqualTo("mp3");
+        assertThat(getFileExtension(null)).isNull();
         assertThat(getFileExtension("foo")).isNull();
     }
 }

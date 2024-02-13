@@ -26,8 +26,8 @@ public final class FileUtils {
 	 * 
 	 * @param file The file to delete.
 	 */
-	public static void delete(File file) {
-		delete(file.toPath());
+	public static void deleteQuietly(File file) {
+		deleteQuietly(file.toPath());
 	}
 
 	/**
@@ -39,7 +39,7 @@ public final class FileUtils {
 	 * 
 	 * @param file The file to delete.
 	 */
-	public static void delete(Path file) {
+	public static void deleteQuietly(Path file) {
 		if (file == null) {
 			// Do nothing, could be used in finally blocks
 			return;
@@ -63,11 +63,11 @@ public final class FileUtils {
 	 * 
 	 * @param directory The directory to delete.
 	 */
-	public static void deleteDirectory(Path directory) {
+	public static void deleteDirectoryQuietly(Path directory) {
 		if (directory == null) {
 			return;
 		}
-		deleteDirectory(directory.toFile());
+		deleteDirectoryQuietly(directory.toFile());
 	}
 
 	/**
@@ -75,7 +75,7 @@ public final class FileUtils {
 	 * 
 	 * @param directory The directory to delete.
 	 */
-	public static void deleteDirectory(File directory) {
+	public static void deleteDirectoryQuietly(File directory) {
 		if (directory == null) {
 			return;
 		}

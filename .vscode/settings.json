@@ -8,7 +8,7 @@
 
     "editor.tabSize": 4,
 
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "automatic",
 
     "java.checkstyle.configuration": ".config/checkstyle-config.xml",
     "java.format.settings.url": ".config/eclipse-formatter.xml",
