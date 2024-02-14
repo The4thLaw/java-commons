@@ -1,4 +1,4 @@
-package org.the4thlaw.utils.image;
+package org.the4thlaw.commons.utils.image;
 
 import java.io.File;
 import java.io.IOException;

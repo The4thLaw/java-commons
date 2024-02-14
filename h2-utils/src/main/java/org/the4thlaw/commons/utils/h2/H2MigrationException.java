@@ -1,4 +1,4 @@
-package org.the4thlaw.utils.h2;
+package org.the4thlaw.commons.utils.h2;
 
 public class H2MigrationException extends RuntimeException {
 	/**

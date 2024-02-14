@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.the4thlaw</groupId>
 	<artifactId>java-commons</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<packaging>pom</packaging>
 	<name>The4thLaw Utils</name>
 	<description>Common utilities for Java projects at https://github.com/The4thLaw/</description>
@@ -52,11 +52,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.rootdir>${project.basedir}</project.rootdir>
+		<org.springframework.version>5.3.25</org.springframework.version>
 	</properties>
 
 	<modules>
 		<module>common-utils</module>
 		<module>h2-utils</module>
+		<module>common-services</module>
 	</modules>
 
 	<dependencies>
@@ -70,6 +72,12 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.the4thlaw</groupId>
+				<artifactId>common-utils</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>2.15.1</version>
@@ -79,6 +87,23 @@
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
 				<version>2.2.224</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${org.springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${org.springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${org.springframework.version}</version>
+				<scope>test</scope>
 			</dependency>
 
 			<dependency>

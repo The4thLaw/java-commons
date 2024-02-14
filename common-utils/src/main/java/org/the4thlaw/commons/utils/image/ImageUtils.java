@@ -1,4 +1,4 @@
-package org.the4thlaw.utils.image;
+package org.the4thlaw.commons.utils.image;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,7 +10,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
-import org.the4thlaw.utils.io.FilenameUtils;
+import org.the4thlaw.commons.utils.io.FilenameUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

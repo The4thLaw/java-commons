@@ -1,4 +1,4 @@
-package org.the4thlaw.utils.io;
+package org.the4thlaw.commons.utils.io;
 
 import java.util.Locale;
 import java.util.regex.Pattern;

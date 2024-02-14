@@ -1,4 +1,4 @@
-package org.the4thlaw.utils.h2;
+package org.the4thlaw.commons.utils.h2;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -206,7 +206,9 @@ public class H2LocalUpgrader {
 			if ((version & 1) != 0 || version > Constants.BUILD_ID) {
 				throw new IllegalArgumentException("version=" + version);
 			}
-			prefix = "2.0.";
+			int major = version / 100;
+            int minor = version / 10 % 10;
+            prefix = new StringBuilder().append(major).append('.').append(minor).append('.').toString();
 		} else if (version >= 177) {
 			prefix = "1.4.";
 		} else if (version >= 146 && version != 147) {

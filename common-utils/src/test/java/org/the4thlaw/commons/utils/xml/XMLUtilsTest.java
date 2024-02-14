@@ -1,4 +1,4 @@
-package org.the4thlaw.utils.xml;
+package org.the4thlaw.commons.utils.xml;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;

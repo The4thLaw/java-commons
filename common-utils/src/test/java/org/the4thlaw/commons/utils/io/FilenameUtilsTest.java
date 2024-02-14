@@ -1,9 +1,9 @@
-package org.the4thlaw.utils.io;
+package org.the4thlaw.commons.utils.io;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.the4thlaw.utils.io.FilenameUtils.getFileExtension;
+import static org.the4thlaw.commons.utils.io.FilenameUtils.getFileExtension;
 
-import org.the4thlaw.utils.image.ImageUtils;
+import org.the4thlaw.commons.utils.image.ImageUtils;
 
 import org.junit.jupiter.api.Test;
 
