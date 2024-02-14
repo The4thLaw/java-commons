@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.the4thlaw</groupId>
+		<artifactId>java-commons</artifactId>
+		<version>1.2.0</version>
+	</parent>
+
+	<artifactId>common-services</artifactId>
+	<packaging>jar</packaging>
+
+	<name>The4thLaw Utils - Commons</name>
+	<description>Common utilities for Java projects at https://github.com/The4thLaw - Common services</description>
+	<inceptionYear>2024</inceptionYear>
+
+	<properties>
+		<project.rootdir>${project.basedir}/..</project.rootdir>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.the4thlaw</groupId>
+			<artifactId>common-utils</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+			<version>4.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>
