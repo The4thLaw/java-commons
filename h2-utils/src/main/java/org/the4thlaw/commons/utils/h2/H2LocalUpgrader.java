@@ -58,7 +58,7 @@ public class H2LocalUpgrader {
 	 * @param versionsDirectory The path to the JAR directory. Must exist (will be checked at instanciation time) and
 	 *            contain the relevant JARs (will be checked at migration time).
 	 */
-	public H2LocalUpgrader(Path versionsDirectory) throws IOException {
+	public H2LocalUpgrader(Path versionsDirectory) {
 		this.versionsDirectory = validateVersionsDirectory(versionsDirectory);
 	}
 
