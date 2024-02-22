@@ -19,7 +19,6 @@ class ClassUtilsTest {
             try {
                 c.getConstructor(String.class, Throwable.class);
             } catch (NoSuchMethodException | SecurityException e) {
-                e.printStackTrace();
                 return false;
             }
             return true;

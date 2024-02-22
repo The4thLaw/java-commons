@@ -9,11 +9,11 @@
 		<version>1.4.0</version>
 	</parent>
 
-	<artifactId>common-utils</artifactId>
+	<artifactId>image-utils</artifactId>
 	<packaging>jar</packaging>
 
-	<name>The4thLaw Utils - Common utilities</name>
-	<description>Common utilities for Java projects at https://github.com/The4thLaw - Common utilities with minimal dependencies</description>
+	<name>The4thLaw Utils - Image utilities</name>
+	<description>Common utilities for Java projects at https://github.com/The4thLaw - Image utilities </description>
 	<inceptionYear>2024</inceptionYear>
 
 	<properties>
@@ -22,8 +22,20 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
+			<groupId>org.the4thlaw</groupId>
+			<artifactId>common-utils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-jpeg</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-webp</artifactId>
 		</dependency>
 
 		<dependency>
@@ -33,10 +45,6 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
 		</dependency>
 	</dependencies>
 

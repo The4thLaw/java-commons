@@ -3,8 +3,6 @@ package org.the4thlaw.commons.utils.io;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.the4thlaw.commons.utils.io.FilenameUtils.getFileExtension;
 
-import org.the4thlaw.commons.utils.image.ImageUtils;
-
 import org.junit.jupiter.api.Test;
 
 /**

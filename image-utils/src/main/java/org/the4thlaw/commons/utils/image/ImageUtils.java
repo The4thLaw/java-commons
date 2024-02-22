@@ -1,17 +1,26 @@
 package org.the4thlaw.commons.utils.image;
 
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Iterator;
+import java.util.Locale;
+import java.util.function.Function;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
+import org.the4thlaw.commons.utils.io.FileUtils;
 import org.the4thlaw.commons.utils.io.FilenameUtils;
 
+import org.imgscalr.Scalr;
+import org.imgscalr.Scalr.Method;
+import org.imgscalr.Scalr.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,5 +85,55 @@ public final class ImageUtils {
 				buffImage.flush();
 			}
 		}
+	}
+
+	public enum ImageOutputFormat {
+		JPG, PNG;
+
+		public String getImageIOFormat() {
+			return name().toLowerCase(Locale.ROOT);
+		}
+
+		public String getFileExtension() {
+			return getImageIOFormat();
+		}
+	}
+
+	public static Path resize(Path image, int maxWidth, Function<ImageOutputFormat, Path> outputPath)
+			throws IIOException {
+		BufferedImage buffImage;
+		try {
+			buffImage = ImageIO.read(image.toFile());
+		} catch (IOException e) {
+			throw new IIOException("I/O error while reading the source image", e);
+		}
+
+		if (buffImage == null) {
+			throw new IIOException("Failed to open image " + image + ", potential unsupported image format");
+		}
+
+		long time = System.currentTimeMillis();
+		LOGGER.trace("Resizing image {} at width {}", image, maxWidth);
+
+		BufferedImage buffThumb = Scalr.resize(buffImage, Method.ULTRA_QUALITY, Mode.FIT_TO_WIDTH, maxWidth, 0,
+				Scalr.OP_ANTIALIAS);
+		LOGGER.debug("Thumbnail for {} generated in {}ms", image, System.currentTimeMillis() - time);
+
+		ImageOutputFormat outputFormat = Transparency.OPAQUE == buffThumb.getTransparency() ? ImageOutputFormat.JPG
+				: ImageOutputFormat.PNG;
+		Path output = outputPath.apply(outputFormat);
+
+		try {
+			ImageIO.write(buffThumb, outputFormat.getImageIOFormat(), output.toFile());
+		} catch (IOException e) {
+			// Ensure we don't store invalid contents
+			FileUtils.deleteQuietly(output);
+			throw new IIOException("I/O error while writing the thumbnail", e);
+		} finally {
+			buffImage.flush();
+			buffThumb.flush();
+		}
+
+		return output;
 	}
 }

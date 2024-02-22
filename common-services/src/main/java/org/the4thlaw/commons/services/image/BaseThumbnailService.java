@@ -1,7 +1,5 @@
 package org.the4thlaw.commons.services.image;
 
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,14 +16,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.imageio.ImageIO;
-
 import org.the4thlaw.commons.utils.image.ImageUtils;
-import org.the4thlaw.commons.utils.io.FileUtils;
 
-import org.imgscalr.Scalr;
-import org.imgscalr.Scalr.Method;
-import org.imgscalr.Scalr.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -46,8 +38,15 @@ public abstract class BaseThumbnailService {
 	 */
 	private static final int THUMB_TIMEOUT_SECONDS = 150;
 
+	/**
+	 * Functional interface to retrieve the path to an image.
+	 */
 	@FunctionalInterface
 	public interface ImageSupplier {
+		/**
+		 * Loads the path to an image and returns it.
+		 * @return The path to the image.
+		 */
 		Path getImage();
 	}
 
@@ -115,6 +114,14 @@ public abstract class BaseThumbnailService {
 		executor.setCorePoolSize(maxThreads);
 	}
 
+	/**
+	 * Gets (and potentially generates) the thumbnail for a given image.
+	 * @param id The ID of the image, used to automatically name the thumbnail.
+	 * @param maxWidth The maximum thumbnail width.
+	 * @param lenient If true, an other image close to the target width could be returned in case of issue.
+	 * @param imageFileLoader A way to get the path to the image to resize.
+	 * @return The thumbnail information.
+	 */
 	public ImageRetrievalResponse getThumbnail(long id, int maxWidth, boolean lenient, ImageSupplier imageFileLoader)			 {
 		Path directoryBySize = thumbnailDirectory.resolve(maxWidth + "w");
 
@@ -226,18 +233,6 @@ public abstract class BaseThumbnailService {
 			return null;
 		}
 
-		BufferedImage buffImage;
-		try {
-			buffImage = ImageIO.read(image.toFile());
-		} catch (IOException e) {
-			throw new ThumbnailException("I/O error while reading the source image", e);
-		}
-
-		long time = System.currentTimeMillis();
-		logThumbnailExecutorStats();
-		LOGGER.trace("Generating thumbnail for image {} at width {}", id, maxWidth);
-
-		// Avoid creating the directory if we return the original image
 		if (!Files.isDirectory(directoryBySize)) {
 			try {
 				Files.createDirectories(directoryBySize);
@@ -249,29 +244,13 @@ public abstract class BaseThumbnailService {
 			LOGGER.trace("Thumbnail directory exists: {}", directoryBySize);
 		}
 
-		BufferedImage buffThumb = Scalr.resize(buffImage, Method.ULTRA_QUALITY, Mode.FIT_TO_WIDTH, maxWidth, 0,
-				Scalr.OP_ANTIALIAS);
-		LOGGER.debug("Thumbnail for {} generated in {}ms", id, System.currentTimeMillis() - time);
+		logThumbnailExecutorStats();
 
-		Path jpgThumb = directoryBySize.resolve(id + ".jpg");
-		Path pngThumb = directoryBySize.resolve(id + ".png");
 		try {
-			// Write opaque images as JPG, transparent images as PNG
-			if (Transparency.OPAQUE == buffThumb.getTransparency()) {
-				ImageIO.write(buffThumb, "jpg", jpgThumb.toFile());
-				return new ImageRetrievalResponse(jpgThumb);
-			} else {
-				ImageIO.write(buffThumb, "png", pngThumb.toFile());
-				return new ImageRetrievalResponse(pngThumb);
-			}
+			Path output = ImageUtils.resize(image, maxWidth, fmt -> directoryBySize.resolve(id + "." + fmt.getFileExtension()));
+			return new ImageRetrievalResponse(output);
 		} catch (IOException e) {
-			// Ensure we don't store invalid contents
-			FileUtils.deleteQuietly(jpgThumb);
-			FileUtils.deleteQuietly(pngThumb);
 			throw new ThumbnailException("I/O error while writing the thumbnail", e);
-		} finally {
-			buffImage.flush();
-			buffThumb.flush();
 		}
 	}
 

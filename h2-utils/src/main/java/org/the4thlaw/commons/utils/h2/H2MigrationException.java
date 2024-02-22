@@ -1,5 +1,8 @@
 package org.the4thlaw.commons.utils.h2;
 
+/**
+ * Denotes issues during an H2 version migration.
+ */
 public class H2MigrationException extends RuntimeException {
 	/**
 	 * Constructs a new exception with the specified detail message. The cause is not initialized, and may subsequently
