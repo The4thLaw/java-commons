@@ -36,6 +36,7 @@ import org.h2.util.StringUtils;
  * </p>
  */
 public class H2LocalUpgrader {
+	private static final String SUFFIX_OLD_H2_STORE = ".h2.db";
 	private static final String SUFFIX_LOB_FILE = ".lobs.db";
 
 	private final Path versionsDirectory;
@@ -101,8 +102,7 @@ public class H2LocalUpgrader {
 		String name = ci.getName();
 
 		// Copy the database to work on a specific version: file locks will sometimes
-		// not be released, causing migration
-		// issues
+		// not be released, causing migration issues
 		String workingCopyName = ci.getName() + "-migration";
 		copy(name, workingCopyName);
 
@@ -119,6 +119,7 @@ public class H2LocalUpgrader {
 		} finally {
 			unloadH2(driver);
 		}
+		// Rename to keep a backup and to work on a fresh database using the same URL
 		rename(name, false);
 		try (JdbcConnection conn = new JdbcConnection(url, info, null, null, false);
 				Statement stmt = conn.createStatement()) {
@@ -129,26 +130,38 @@ public class H2LocalUpgrader {
 			}
 			stmt.execute(builder.toString());
 		} catch (Exception e) {
+			// Restore the backup
 			rename(name, true);
 			throw e;
 		} finally {
 			Files.deleteIfExists(Paths.get(script));
 			// We delete the working copy but keep the backup just in case
-			Path workingMv = Paths.get(workingCopyName + Constants.SUFFIX_MV_FILE);
-			Path workingLob = Paths.get(workingCopyName + SUFFIX_LOB_FILE);
-			try {
-				Files.deleteIfExists(workingMv);
-				Files.deleteIfExists(workingLob);
-			} catch (IOException e) {
-				// Do nothing, it's not a big deal
-				workingMv.toFile().deleteOnExit();
-				workingLob.toFile().deleteOnExit();
-			}
+			delete(workingCopyName);
 		}
 		return true;
 	}
 
+	/**
+	 * Deletes all H2-related files derived from a base name.
+	 * @param name The base name for the H2 files (basically the H2 url without extensions)
+	 */
+	private static void delete(String name) {
+		delete(Path.of(name + SUFFIX_OLD_H2_STORE));
+		delete(Path.of(name + Constants.SUFFIX_MV_FILE));
+		delete(Path.of(name + SUFFIX_LOB_FILE));
+	}
+
+	private static void delete(Path path) {
+		try {
+			Files.deleteIfExists(path);
+		} catch (IOException e) {
+			// Do nothing, it's not a big deal
+			path.toFile().deleteOnExit();
+		}
+	}
+
 	private static void rename(String name, boolean back) throws IOException {
+		rename(name, SUFFIX_OLD_H2_STORE, back);
 		rename(name, Constants.SUFFIX_MV_FILE, back);
 		rename(name, SUFFIX_LOB_FILE, back);
 	}
@@ -163,11 +176,19 @@ public class H2LocalUpgrader {
 		}
 		Path p = Paths.get(source);
 		if (Files.exists(p)) {
-			Files.move(p, Paths.get(target), StandardCopyOption.ATOMIC_MOVE);
+			Path targetPath = Path.of(target);
+			// Delete the potentially existing target file too
+			// else we risk that a broken, partially migrate database, is left behind
+			Files.deleteIfExists(targetPath);
+
+			Files.move(p, targetPath, StandardCopyOption.ATOMIC_MOVE);
 		}
 	}
 
 	private static void copy(String source, String target) throws IOException {
+		// .h2 files were used in H2 v1.3.x
+		copy(source, target, SUFFIX_OLD_H2_STORE);
+		// .mv is the new standard
 		copy(source, target, Constants.SUFFIX_MV_FILE);
 		copy(source, target, SUFFIX_LOB_FILE);
 	}
