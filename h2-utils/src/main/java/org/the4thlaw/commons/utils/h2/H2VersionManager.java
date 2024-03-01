@@ -99,7 +99,7 @@ public class H2VersionManager {
 			}
 		}
 
-		// Always write the current H2 version
+		// Always write the current H2 version, as long as the migration succeeded
 		try {
 			Files.write(databaseVersionFile, String.valueOf(Constants.BUILD_ID).getBytes(StandardCharsets.UTF_8));
 		} catch (IOException e) {
