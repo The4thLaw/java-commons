@@ -109,7 +109,7 @@ public class H2VersionManager {
 			LOGGER.debug("Checking if the database's H2 version must be migrated");
 			int version = getCurrentVersion();
 
-			if (version != Constants.BUILD_ID) {
+			if (version != getClasspathH2Version()) {
 				LOGGER.info("Migrating the H2 database from {} to {}", version, Constants.BUILD_ID);
 				Properties dbMigProps = new Properties();
 				dbMigProps.setProperty("user", dbUser);
@@ -123,7 +123,7 @@ public class H2VersionManager {
 
 		// Always write the current H2 version, as long as the migration succeeded
 		try {
-			Files.write(databaseVersionFile, String.valueOf(Constants.BUILD_ID).getBytes(StandardCharsets.UTF_8));
+			Files.write(databaseVersionFile, String.valueOf(getClasspathH2Version()).getBytes(StandardCharsets.UTF_8));
 		} catch (IOException e) {
 			throw new H2MigrationException("Failed to write the database version file at " + databaseVersionFile, e);
 		}
