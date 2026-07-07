@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * An opiniated H2 version and migration manager.
- * <p>Relies on a file named {@value #VERSION_FILE_NAME} to identify the version.</p>
+ * <p>
+ * Relies on a file named {@value #VERSION_FILE_NAME} to identify the version.
+ * </p>
  */
 public class H2VersionManager {
 	private static final Logger LOGGER = LoggerFactory.getLogger(H2VersionManager.class);
@@ -25,6 +27,7 @@ public class H2VersionManager {
 
 	/**
 	 * Creates a versions manager that does not tolerate missing database version files (checked at migration time).
+	 * 
 	 * @param databaseDirectory The directory containing the H2 database files.
 	 * @param upgrader The version upgrader.
 	 */
@@ -34,6 +37,7 @@ public class H2VersionManager {
 
 	/**
 	 * Creates a versions manager.
+	 * 
 	 * @param defaultVersion The default version of the database, if the version file doesn't exist.
 	 * @param databaseDirectory The directory containing the H2 database files.
 	 * @param upgrader The version upgrader.
@@ -50,6 +54,7 @@ public class H2VersionManager {
 
 	/**
 	 * Gets the current version of the database.
+	 * 
 	 * @return The declared or default version (if a default version is allowed).
 	 */
 	public int getCurrentVersion() {
@@ -75,7 +80,24 @@ public class H2VersionManager {
 	}
 
 	/**
+	 * Gets the version of H2 that is active in the default classpath.
+	 * <p>
+	 * Uses reflection to make sure that we don't get an inlined constant from the compiler.
+	 * </p>
+	 */
+	public static int getClasspathH2Version() {
+		try {
+			return Class.forName("org.h2.engine.Constants")
+					.getField("BUILD_ID")
+					.getInt(null);
+		} catch (Exception e) {
+			throw new IllegalStateException("Failed to detect the H2 version from the classpath", e);
+		}
+	}
+
+	/**
 	 * Migrates the database provided in URL if needed.
+	 * 
 	 * @param isNewDatabase {@code true} if we're dealing with a fresh database (will just write the version file).
 	 * @param url The URL to connect to the database.
 	 * @param dbUser The database user.

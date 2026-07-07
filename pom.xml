@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.the4thlaw</groupId>
 	<artifactId>java-commons</artifactId>
-	<version>1.4.0</version>
+	<version>1.5.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>The4thLaw Utils</name>
 	<description>Common utilities for Java projects at https://github.com/The4thLaw/</description>

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.h2.jdbcx.JdbcDataSource;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -20,6 +21,14 @@ class H2VersionManagerTest {
     private static final String DB_USER = "user";
     private static final String DB_PASSWORD = "password";
     private H2LocalUpgrader upgrader = new H2LocalUpgrader(Path.of("target/legacy-h2-versions"));
+
+    /**
+     * Ensures that the version from the classpath is properly retrieved.
+     */
+    @Test
+    void testVersionFromClasspath() {
+        assertThat(H2VersionManager.getClasspathH2Version()).isEqualTo(224);
+    }
 
     /**
      * Tests various migrations to make sure everything works as excpected.

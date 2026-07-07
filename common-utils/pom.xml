@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.the4thlaw</groupId>
 		<artifactId>java-commons</artifactId>
-		<version>1.4.0</version>
+		<version>1.5.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>common-utils</artifactId>
