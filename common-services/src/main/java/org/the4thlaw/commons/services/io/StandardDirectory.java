@@ -2,6 +2,7 @@ package org.the4thlaw.commons.services.io;
 
 /**
  * All standard directories supported by the directory service.
+ * @since 1.5
  */
 public enum StandardDirectory {
 	/** Defines the base directory relative to which user-specific non-essential data files should be stored. */
@@ -14,6 +15,8 @@ public enum StandardDirectory {
 	EXPORT,
 	/** Defines the base directory relative to which user-specific image files should be stored. */
 	IMAGES,
+	/** Defines the base directory relative to which user-specific log files should be stored. */
+	LOGS,
 	/**
 	 * Defines the base directory relative to which user-specific non-essential runtime files and other file objects
 	 * (such as sockets, named pipes, ...) should be stored.

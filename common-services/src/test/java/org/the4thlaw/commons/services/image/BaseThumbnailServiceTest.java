@@ -82,7 +82,7 @@ class BaseThumbnailServiceTest {
 
 	/**
 	 * Tests
-	 * {@link ThumbnailService#getThumbnail(long, int, boolean, org.demyo.service.impl.ThumbnailService.ImageSupplier)}
+	 * {@link ThumbnailService#getThumbnail(long, int, boolean, ThumbnailService.ImageSupplier)}
 	 * .
 	 *
 	 * <p>
@@ -90,7 +90,6 @@ class BaseThumbnailServiceTest {
 	 * </p>
 	 *
 	 * @param imageName The name of the image to use as source.
-	 * @throws DemyoException If generation fails.
 	 * @throws IOException If copying the source or asserting the destination fails.
 	 * @throws URISyntaxException If getting the source fails.
 	 */
@@ -110,7 +109,7 @@ class BaseThumbnailServiceTest {
 
 	/**
 	 * Tests
-	 * {@link ThumbnailService#getThumbnail(long, int, boolean, org.demyo.service.impl.ThumbnailService.ImageSupplier)}
+	 * {@link ThumbnailService#getThumbnail(long, int, boolean, ThumbnailService.ImageSupplier)}
 	 * .
 	 *
 	 * <p>
@@ -118,7 +117,6 @@ class BaseThumbnailServiceTest {
 	 * </p>
 	 *
 	 * @param imageName The name of the image to use as source.
-	 * @throws DemyoException If generation fails.
 	 * @throws IOException If copying the source or asserting the destination fails.
 	 * @throws URISyntaxException If getting the source fails.
 	 */
@@ -134,7 +132,7 @@ class BaseThumbnailServiceTest {
 
 	/**
 	 * Tests
-	 * {@link ThumbnailService#getThumbnail(long, int, boolean, org.demyo.service.impl.ThumbnailService.ImageSupplier)}
+	 * {@link ThumbnailService#getThumbnail(long, int, boolean, ThumbnailService.ImageSupplier)}
 	 * .
 	 *
 	 * <p>
@@ -142,7 +140,6 @@ class BaseThumbnailServiceTest {
 	 * </p>
 	 *
 	 * @param imageName The name of the image to use as source.
-	 * @throws DemyoException If generation fails.
 	 * @throws IOException If copying the source or asserting the destination fails.
 	 * @throws URISyntaxException If getting the source fails.
 	 */
@@ -158,7 +155,7 @@ class BaseThumbnailServiceTest {
 
 	/**
 	 * Tests
-	 * {@link ThumbnailService#getThumbnail(long, int, boolean, org.demyo.service.impl.ThumbnailService.ImageSupplier)}
+	 * {@link ThumbnailService#getThumbnail(long, int, boolean, ThumbnailService.ImageSupplier)}
 	 * .
 	 *
 	 * <p>
@@ -166,7 +163,6 @@ class BaseThumbnailServiceTest {
 	 * </p>
 	 *
 	 * @param imageName The name of the image to use as source.
-	 * @throws DemyoException If generation fails.
 	 * @throws IOException If copying the source or asserting the destination fails.
 	 * @throws URISyntaxException If getting the source fails.
 	 */

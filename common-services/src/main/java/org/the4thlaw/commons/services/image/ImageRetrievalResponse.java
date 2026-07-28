@@ -1,14 +1,17 @@
 package org.the4thlaw.commons.services.image;
 
 import java.nio.file.Path;
+import java.util.Objects;
 
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.lang.NonNull;
 
 /**
  * Represents the results of the request for an image.
  */
 public class ImageRetrievalResponse {
+	@NonNull
 	private final Path file;
 	private boolean exact = true;
 
@@ -18,7 +21,7 @@ public class ImageRetrievalResponse {
 	 * @param file The file containing the requested image.
 	 */
 	public ImageRetrievalResponse(Path file) {
-		this.file = file;
+		this.file = Objects.requireNonNull(file, "file is null");
 	}
 
 	/**
