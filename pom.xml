@@ -53,7 +53,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.rootdir>${project.basedir}</project.rootdir>
-		<org.springframework.version>6.1.4</org.springframework.version>
+		<org.springframework.version>6.1.21</org.springframework.version>
 		<com.twelvemonkeys.imageio.version>3.10.1</com.twelvemonkeys.imageio.version>
 	</properties>
 
@@ -150,7 +150,7 @@
 			<dependency>
 				<groupId>org.assertj</groupId>
 				<artifactId>assertj-core</artifactId>
-				<version>3.25.3</version>
+				<version>3.27.7</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
