@@ -1,13 +1,6 @@
 package org.the4thlaw.commons.services.io;
 
 import java.nio.file.Path;
-import java.util.function.Function;
-
-import org.the4thlaw.commons.services.io.impl.MacOsXDirectoryService;
-import org.the4thlaw.commons.services.io.impl.WindowsDirectoryService;
-import org.the4thlaw.commons.services.io.impl.XdgDirectoryService;
-
-import org.apache.commons.lang3.SystemUtils;
 
 /**
  * A service that retrieves directories based on standard guidelines (up to the implementor).
@@ -51,22 +44,4 @@ public interface IDirectoryService {
 	Path getTempDirectory();
 	/** Gets the {@link StandardDirectory#THUMBNAILS} directory. */
 	Path getThumbnailsDirectory();
-
-	/**
-	 * Gets the service that is relevant for the current OS.
-	 * 
-	 * @return service builder. Takes one parameter as argument: the application name.
-	 */
-	default Function<String, ? extends IDirectoryService> autoDetectServiceClass() {
-		if (SystemUtils.IS_OS_WINDOWS) {
-			return WindowsDirectoryService::new;
-		}
-		if (SystemUtils.IS_OS_MAC_OSX) {
-			return MacOsXDirectoryService::new;
-		}
-		if (SystemUtils.IS_OS_UNIX) {
-			return XdgDirectoryService::new;
-		}
-		throw new IllegalStateException("Couldn't detect the OS");
-	}
 }
