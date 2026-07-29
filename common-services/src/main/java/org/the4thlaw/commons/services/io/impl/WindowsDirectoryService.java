@@ -14,7 +14,7 @@ public class WindowsDirectoryService extends RootedDirectoryService {
     }
 
     @Override
-	public Path getTempDirectory() {
+	protected Path getTempDirectoryPath() {
 		String user = SystemUtils.USER_NAME;
 		return Path.of(SystemUtils.JAVA_IO_TMPDIR)
 				.resolve(appName + "_" + user);

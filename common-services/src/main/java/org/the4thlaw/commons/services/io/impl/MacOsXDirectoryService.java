@@ -14,27 +14,27 @@ public class MacOsXDirectoryService extends BaseDirectoryService {
     }
 
     @Override
-    public Path getCacheDirectory() {
+    protected Path getCacheDirectoryPath() {
         return HOME.resolve("Library").resolve("Caches").resolve(appName);
     }
 
     @Override
-    public Path getConfigurationDirectory() {
+    protected Path getConfigurationDirectoryPath() {
         return HOME.resolve("Library").resolve("Preferences").resolve(appName);
     }
 
     @Override
-    public Path getDataDirectory() {
+    protected Path getDataDirectoryPath() {
         return HOME.resolve("Library").resolve("Application Support").resolve(appName);
     }
 
     @Override
-    public Path getRuntimeDirectory() {
+    protected Path getRuntimeDirectoryPath() {
         return getDataDirectory().resolve("runtime");
     }
 
     @Override
-    public Path getStateDirectory() {
+    protected Path getStateDirectoryPath() {
         return getDataDirectory().resolve("state");
     }
 }

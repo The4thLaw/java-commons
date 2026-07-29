@@ -47,37 +47,37 @@ public class RootedDirectoryService extends BaseDirectoryService {
     }
 
     @Override
-    public Path getCacheDirectory() {
+    protected Path getCacheDirectoryPath() {
         return root.resolve("cache");
     }
 
     @Override
-    public Path getConfigurationDirectory() {
+    protected Path getConfigurationDirectoryPath() {
         return root;
     }
 
     @Override
-    public Path getDataDirectory() {
+    protected Path getDataDirectoryPath() {
         return root;
     }
 
     @Override
-    public Path getExportDirectory() {
+    protected Path getExportDirectoryPath() {
         return root.resolve("exports");
     }
 
     @Override
-    public Path getRuntimeDirectory() {
+    public Path getRuntimeDirectoryPath() {
         return root.resolve("runtime");
     }
 
     @Override
-    public Path getStateDirectory() {
+    protected Path getStateDirectoryPath() {
         return root.resolve("state");
     }
 
     @Override
-    public Path getThumbnailsDirectory() {
+    protected Path getThumbnailsDirectoryPath() {
         return root.resolve("thumbnails");
     }
 }

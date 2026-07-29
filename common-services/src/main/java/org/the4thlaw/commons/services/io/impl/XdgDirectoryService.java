@@ -65,32 +65,32 @@ public class XdgDirectoryService extends BaseDirectoryService {
 	}
 
 	@Override
-	public Path getCacheDirectory() {
+	protected Path getCacheDirectoryPath() {
 		return getAppXdgDirectory(StandardDirectory.CACHE);
 	}
 
 	@Override
-	public Path getConfigurationDirectory() {
+	protected Path getConfigurationDirectoryPath() {
 		return getAppXdgDirectory(StandardDirectory.CONFIGURATION);
 	}
 
 	@Override
-	public Path getDataDirectory() {
+	protected Path getDataDirectoryPath() {
 		return getAppXdgDirectory(StandardDirectory.DATA);
 	}
 
 	@Override
-	public Path getRuntimeDirectory() {
+	protected Path getRuntimeDirectoryPath() {
 		return getAppXdgDirectory(StandardDirectory.RUNTIME);
 	}
 
 	@Override
-	public Path getStateDirectory() {
+	protected Path getStateDirectoryPath() {
 		return getAppXdgDirectory(StandardDirectory.STATE);
 	}
 
 	@Override
-	public Path getTempDirectory() {
+	protected Path getTempDirectoryPath() {
 		String user = SystemUtils.USER_NAME;
 		return getAppXdgDirectory(StandardDirectory.TEMP)
 				.resolve(appName + "_" + user);
