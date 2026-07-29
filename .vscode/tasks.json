@@ -4,25 +4,25 @@
         {
             "label": "Maven install (skip tests)",
             "type": "shell",
-            "command": "./mvnw -B install -DskipTests",
+            "command": "./mvnw -B install '-Dstyle.color=always' -DskipTests",
             "group": "build"
         },
         {
             "label": "Maven install",
             "type": "shell",
-            "command": "./mvnw -B install",
+            "command": "./mvnw -B install '-Dstyle.color=always'",
             "group": "build"
         },
         {
             "label": "Maven clean",
             "type": "shell",
-            "command": "./mvnw -B clean",
+            "command": "./mvnw -B clean '-Dstyle.color=always'",
             "group": "build"
         },
         {
             "label": "Maven check dependencies",
             "type": "shell",
-            "command": "./mvnw -B site -Pcheck-deps -DskipTests -U",
+            "command": "./mvnw -B site -Pcheck-deps '-Dstyle.color=always' -DskipTests -U",
             "group": "build"
         },
     ]
