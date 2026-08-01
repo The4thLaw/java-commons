@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 
+import org.the4thlaw.commons.exception.CommonErrorCode;
+import org.the4thlaw.commons.exception.CommonRuntimeException;
 import org.the4thlaw.commons.services.io.DirectoryException;
 import org.the4thlaw.commons.services.io.IDirectoryService;
 import org.the4thlaw.commons.services.io.StandardDirectory;
@@ -140,5 +142,30 @@ public abstract class BaseDirectoryService implements IDirectoryService {
 
 	protected Path getThumbnailsDirectoryPath() {
 		return getCacheDirectory().resolve("thumbnails");
+	}
+
+	/**
+	 * Creates a temporary file in the specified directory. The file is marked as to be deleted on exit.
+	 *
+	 * @param prefix The prefix string to be used in generating the file's name; must be at least three characters long
+	 * @param suffix The suffix string to be used in generating the file's name; may be <code>null</code>, in which case
+	 *            the suffix <code>".tmp"</code> will be used
+	 * @param directory The directory in which the file is to be created, or <code>null</code> if the default
+	 *            temporary-file directory is to be used
+	 * @return The created file.
+	 */
+	public Path createTempFile(String prefix, String suffix, Path directory) {
+		if (directory == null) {
+			directory = getTempDirectory();
+		}
+
+		Path temp;
+		try {
+			temp = Files.createTempFile(directory, prefix, suffix);
+		} catch (IOException e) {
+			throw new CommonRuntimeException(CommonErrorCode.IO_GENERIC_ERROR, e);
+		}
+		temp.toFile().deleteOnExit();
+		return temp;
 	}
 }

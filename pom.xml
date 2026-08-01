@@ -58,9 +58,11 @@
 	</properties>
 
 	<modules>
+		<module>common-model</module>
 		<module>common-utils</module>
 		<module>image-utils</module>
 		<module>h2-utils</module>
+		<module>common-dao</module>
 		<module>common-services</module>
 	</modules>
 
@@ -76,12 +78,22 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.the4thlaw</groupId>
+				<artifactId>common-model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.the4thlaw</groupId>
 				<artifactId>common-utils</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.the4thlaw</groupId>
 				<artifactId>image-utils</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.the4thlaw</groupId>
+				<artifactId>common-dao</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -94,6 +106,12 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
 				<version>3.20.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>jakarta.persistence</groupId>
+				<artifactId>jakarta.persistence-api</artifactId>
+				<version>3.1.0</version>
 			</dependency>
 
 			<dependency>
@@ -119,6 +137,19 @@
 			</dependency>
 
 			<dependency>
+				<groupId>net.java.dev.stax-utils</groupId>
+				<artifactId>stax-utils</artifactId>
+				<version>20070216</version>
+				<exclusions>
+					<!-- Already in JDK6+ -->
+					<exclusion>
+						<groupId>com.bea.xml</groupId>
+						<artifactId>jsr173-ri</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
 				<version>2.2.224</version>
@@ -137,6 +168,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${org.springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
 				<version>${org.springframework.version}</version>
 			</dependency>
@@ -145,6 +181,12 @@
 				<artifactId>spring-test</artifactId>
 				<version>${org.springframework.version}</version>
 				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-commons</artifactId>
+				<version>3.5.12</version>
 			</dependency>
 
 			<dependency>

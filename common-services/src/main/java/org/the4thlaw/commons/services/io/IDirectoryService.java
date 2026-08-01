@@ -44,4 +44,38 @@ public interface IDirectoryService {
 	Path getTempDirectory();
 	/** Gets the {@link StandardDirectory#THUMBNAILS} directory. */
 	Path getThumbnailsDirectory();
+
+	/**
+	 * Creates a temporary file in the application temporary directory. The file is marked as to be deleted on exit.
+	 *
+	 * @param prefix The prefix string to be used in generating the file's name; must be at least three characters long
+	 * @return The created file.
+	 */
+	default Path createTempFile(String prefix) {
+		return createTempFile(prefix, null, null);
+	}
+
+	/**
+	 * Creates a temporary file in the application temporary directory. The file is marked as to be deleted on exit.
+	 *
+	 * @param prefix The prefix string to be used in generating the file's name; must be at least three characters long
+	 * @param suffix The suffix string to be used in generating the file's name; may be <code>null</code>, in which case
+	 *            the suffix <code>".tmp"</code> will be used
+	 * @return The created file.
+	 */
+	default Path createTempFile(String prefix, String suffix) {
+		return createTempFile(prefix, suffix, null);
+	}
+
+	/**
+	 * Creates a temporary file in the specified directory. The file is marked as to be deleted on exit.
+	 *
+	 * @param prefix The prefix string to be used in generating the file's name; must be at least three characters long
+	 * @param suffix The suffix string to be used in generating the file's name; may be <code>null</code>, in which case
+	 *            the suffix <code>".tmp"</code> will be used
+	 * @param directory The directory in which the file is to be created, or <code>null</code> if the default
+	 *            temporary-file directory is to be used
+	 * @return The created file.
+	 */
+	Path createTempFile(String prefix, String suffix, Path directory);
 }
