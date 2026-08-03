@@ -24,8 +24,10 @@ import org.slf4j.LoggerFactory;
 public class DirectoryServiceFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(DirectoryServiceFactory.class);
 
-    private Function<String, ? extends IDirectoryService> implementation;
     private String appName;
+    private Function<String, ? extends IDirectoryService> desiredImplementation;
+    private boolean isAutoDetect;
+    private boolean isAutoDetectLegacy;
 
     public DirectoryServiceFactory withAppName(String appName) {
         this.appName = appName;
@@ -39,7 +41,7 @@ public class DirectoryServiceFactory {
         } catch (NoSuchMethodException | SecurityException e) {
             throw new DirectoryException("Failed to find a matching constructor", e);
         }
-        this.implementation = (String n) -> {
+        this.desiredImplementation = (String n) -> {
             try {
                 return cons.newInstance(n);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -51,50 +53,51 @@ public class DirectoryServiceFactory {
     }
 
     public DirectoryServiceFactory autoDetectImplementation() {
-        if (this.implementation != null) {
-            // Never override a previously configured implementation
-            return this;
-        }
-
-        if (SystemUtils.IS_OS_WINDOWS) {
-            this.implementation = WindowsDirectoryService::new;
-        } else if (SystemUtils.IS_OS_MAC_OSX) {
-            this.implementation = MacOsXDirectoryService::new;
-        } else if (SystemUtils.IS_OS_UNIX) {
-            this.implementation = XdgDirectoryService::new;
-        } else {
-            throw new IllegalStateException("Couldn't detect the OS");
-        }
+        isAutoDetect = true;
         return this;
     }
 
     public DirectoryServiceFactory autoDetectLegacy() {
-        if (SystemUtils.IS_OS_UNIX) {
-            if (StringUtils.isBlank(appName)) {
-                throw new IllegalStateException("The application name must be set before auto-detecting legacy mode");
-            }
+        isAutoDetectLegacy = true;
+        return this;
+    }
+
+    public IDirectoryService build() {
+        if (StringUtils.isBlank(appName)) {
+            throw new IllegalStateException("Illegal app name: " + appName);
+        }
+
+        Function<String, ? extends IDirectoryService> implementation = null;
+
+        
+        if (desiredImplementation != null) {
+            implementation = desiredImplementation;
+        } else if (isAutoDetectLegacy && SystemUtils.IS_OS_UNIX) {
             IDirectoryService rooted = new RootedDirectoryService(appName);
             Path rootedDataDir = rooted.getDirectory(StandardDirectory.DATA, false);
             if (Files.exists(rootedDataDir)) {
                 LOGGER.info("Auto-detected the legacy RootedDirectoryService due to the existence of {}",
                         rootedDataDir);
-                this.implementation = RootedDirectoryService::new;
+                implementation = RootedDirectoryService::new;
             }
         }
-        return this;
-    }
 
-    private void validate() {
-        if (StringUtils.isBlank(appName)) {
-            throw new IllegalStateException("Illegal app name: " + appName);
+        if (implementation == null && isAutoDetect) {
+            if (SystemUtils.IS_OS_WINDOWS) {
+                implementation = WindowsDirectoryService::new;
+            } else if (SystemUtils.IS_OS_MAC_OSX) {
+                implementation = MacOsXDirectoryService::new;
+            } else if (SystemUtils.IS_OS_UNIX) {
+                implementation = XdgDirectoryService::new;
+            } else {
+                throw new IllegalStateException("Couldn't detect the OS");
+            }
         }
+
         if (implementation == null) {
             throw new IllegalStateException("Missing implementation class");
         }
-    }
 
-    public IDirectoryService build() {
-        validate();
         IDirectoryService service = implementation.apply(appName);
         LOGGER.info("Directory service class is {}", service.getClass().getCanonicalName());
         return service;
