@@ -46,9 +46,7 @@ import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
  * </p>
  *
  * <pre>
- * {@code
- * META - INF / services / ch.qos.logback.classic.spi.Configurator
- * }
+ * <tt>META-INF/services/ch.qos.logback.classic.spi.Configurator</tt>
  * </pre>
  *
  * <p>
@@ -79,6 +77,7 @@ import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
 public abstract class BaseDirectoryServiceLogbackConfiguration extends TylerConfiguratorBase implements Configurator {
     protected final String appName;
     protected final String appNameLc;
+    protected final String appLogLevel;
     protected final String[] firstPartyPackages;
     protected final Path logDirectory;
 
@@ -87,8 +86,14 @@ public abstract class BaseDirectoryServiceLogbackConfiguration extends TylerConf
     protected ConsoleAppender<ILoggingEvent> appenderConsole;
 
     protected BaseDirectoryServiceLogbackConfiguration(String appName, String... firstPartyPackages) {
+        this(appName, "INFO", firstPartyPackages);
+    }
+
+    protected BaseDirectoryServiceLogbackConfiguration(String appName, String appLogLevel,
+            String... firstPartyPackages) {
         this.appName = appName;
         this.appNameLc = appName.toLowerCase(Locale.ROOT);
+        this.appLogLevel = appLogLevel;
         this.firstPartyPackages = firstPartyPackages;
         IDirectoryService directoryService = new DirectoryServiceFactory()
                 .withAppName(appName)
@@ -96,6 +101,49 @@ public abstract class BaseDirectoryServiceLogbackConfiguration extends TylerConf
                 .autoDetectLegacy()
                 .build();
         this.logDirectory = directoryService.getLogsDirectory();
+    }
+
+    protected RollingFileAppender<ILoggingEvent> createFileAppender(String name) {
+        RollingFileAppender<ILoggingEvent> appender = new RollingFileAppender<ILoggingEvent>();
+        appender.setContext(context);
+        appender.setName(name);
+        appender.setFile(logDirectory.resolve(name.toLowerCase(Locale.ROOT) + ".log").toAbsolutePath().toString());
+        return appender;
+    }
+
+     protected <T> void setRollingPolicy(String name, RollingFileAppender<T> appender) {
+        TimeBasedRollingPolicy<T> timeBasedRollingPolicy = new TimeBasedRollingPolicy<>();
+        timeBasedRollingPolicy.setContext(context);
+        timeBasedRollingPolicy.setFileNamePattern(
+                logDirectory.resolve("archives")
+                        .resolve(name.toLowerCase(Locale.ROOT) + ".%d.log.zip")
+                        .toAbsolutePath()
+                        .toString());
+        timeBasedRollingPolicy.setMaxHistory(30);
+        timeBasedRollingPolicy.setParent(appender);
+        timeBasedRollingPolicy.start();
+
+        // Inject component of type TimeBasedRollingPolicy into parent
+        appender.setRollingPolicy(timeBasedRollingPolicy);
+        appender.setAppend(true);
+    }
+
+    protected void setEncoder(RollingFileAppender<ILoggingEvent> appender) {
+        PatternLayoutEncoder patternLayoutEncoder = new PatternLayoutEncoder();
+        patternLayoutEncoder.setContext(context);
+        patternLayoutEncoder.setPattern("%d{dd.MM.yyyy HH:mm:ss} [%-5level] %logger{36}:%L - %msg%n");
+        patternLayoutEncoder.setParent(appender);
+        patternLayoutEncoder.start();
+        // Inject component of type PatternLayoutEncoder into parent
+        appender.setEncoder(patternLayoutEncoder);
+    }
+
+    protected RollingFileAppender<ILoggingEvent> setupAppenderFile(String name) {
+        RollingFileAppender<ILoggingEvent> appender = createFileAppender(name);
+        setRollingPolicy(name, appender);
+        setEncoder(appender);
+        appender.start();
+        return appender;
     }
 
     /**
@@ -112,11 +160,11 @@ public abstract class BaseDirectoryServiceLogbackConfiguration extends TylerConf
     public Configurator.ExecutionStatus configure(LoggerContext loggerContext) {
         setContext(loggerContext);
         this.appenderConsole = setupAppenderConsole();
-        this.appenderApp = setupAppenderApp();
-        this.appender3rdParty = setupAppender3rdParty();
+        this.appenderApp = setupAppenderFile(appName);
+        this.appender3rdParty = setupAppenderFile("3rd-Party");
 
         for (String first : firstPartyPackages) {
-            Logger firstLogger = setupLogger(first, "INFO", Boolean.FALSE);
+            Logger firstLogger = setupLogger(first, appLogLevel, Boolean.FALSE);
             firstLogger.addAppender(appenderConsole);
             firstLogger.addAppender(appenderApp);
         }
@@ -139,68 +187,6 @@ public abstract class BaseDirectoryServiceLogbackConfiguration extends TylerConf
         patternLayoutEncoder
                 .setPattern(
                         "%gray(%d{dd.MM.yyyy HH:mm:ss}) [%highlight(%-5level)] %cyan(%logger{36}:%L) %gray(-) %msg%n");
-        patternLayoutEncoder.setParent(appender);
-        patternLayoutEncoder.start();
-        // Inject component of type PatternLayoutEncoder into parent
-        appender.setEncoder(patternLayoutEncoder);
-
-        appender.start();
-        return appender;
-    }
-
-    private RollingFileAppender<ILoggingEvent> setupAppenderApp() {
-        RollingFileAppender<ILoggingEvent> appender = new RollingFileAppender<ILoggingEvent>();
-        appender.setContext(context);
-        appender.setName(appName);
-        appender.setFile(logDirectory.resolve(appNameLc + ".log").toAbsolutePath().toString());
-
-        // Configure component of type TimeBasedRollingPolicy
-        TimeBasedRollingPolicy<?> timeBasedRollingPolicy = new TimeBasedRollingPolicy<ILoggingEvent>();
-        timeBasedRollingPolicy.setContext(context);
-        timeBasedRollingPolicy.setFileNamePattern(
-                logDirectory.resolve("archives").resolve(appNameLc + ".%d.log.zip").toAbsolutePath().toString());
-        timeBasedRollingPolicy.setMaxHistory(30);
-        timeBasedRollingPolicy.setParent(appender);
-        timeBasedRollingPolicy.start();
-        // Inject component of type TimeBasedRollingPolicy into parent
-        appender.setRollingPolicy(timeBasedRollingPolicy);
-        appender.setAppend(true);
-
-        // Configure component of type PatternLayoutEncoder
-        PatternLayoutEncoder patternLayoutEncoder = new PatternLayoutEncoder();
-        patternLayoutEncoder.setContext(context);
-        patternLayoutEncoder.setPattern("%d{dd.MM.yyyy HH:mm:ss} [%-5level] %logger{36}:%L - %msg%n");
-        patternLayoutEncoder.setParent(appender);
-        patternLayoutEncoder.start();
-        // Inject component of type PatternLayoutEncoder into parent
-        appender.setEncoder(patternLayoutEncoder);
-
-        appender.start();
-        return appender;
-    }
-
-    private RollingFileAppender<ILoggingEvent> setupAppender3rdParty() {
-        RollingFileAppender<ILoggingEvent> appender = new RollingFileAppender<ILoggingEvent>();
-        appender.setContext(context);
-        appender.setName("3rdParty");
-        appender.setFile(logDirectory.resolve("3rd-party.log").toAbsolutePath().toString());
-
-        // Configure component of type TimeBasedRollingPolicy
-        TimeBasedRollingPolicy<?> timeBasedRollingPolicy = new TimeBasedRollingPolicy<ILoggingEvent>();
-        timeBasedRollingPolicy.setContext(context);
-        timeBasedRollingPolicy.setFileNamePattern(
-                logDirectory.resolve("archives").resolve("3rd-party.%d.log.zip").toAbsolutePath().toString());
-        timeBasedRollingPolicy.setMaxHistory(30);
-        timeBasedRollingPolicy.setParent(appender);
-        timeBasedRollingPolicy.start();
-        // Inject component of type TimeBasedRollingPolicy into parent
-        appender.setRollingPolicy(timeBasedRollingPolicy);
-        appender.setAppend(true);
-
-        // Configure component of type PatternLayoutEncoder
-        PatternLayoutEncoder patternLayoutEncoder = new PatternLayoutEncoder();
-        patternLayoutEncoder.setContext(context);
-        patternLayoutEncoder.setPattern("%d{dd.MM.yyyy HH:mm:ss} [%-5level] %logger{36}:%L - %msg%n");
         patternLayoutEncoder.setParent(appender);
         patternLayoutEncoder.start();
         // Inject component of type PatternLayoutEncoder into parent
