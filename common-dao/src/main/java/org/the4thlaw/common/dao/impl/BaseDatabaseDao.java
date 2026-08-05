@@ -40,8 +40,8 @@ public abstract class BaseDatabaseDao implements IDatabaseDao {
 		jdbcTemplate.setDataSource(dataSource);
 
 		allTables = new ArrayList<>(entityTables.length + nonEntityTables.length);
-		Collections.addAll(allTables, entityTables);
 		Collections.addAll(allTables, nonEntityTables);
+		Collections.addAll(allTables, entityTables);
 	}
 
 	private void executeUpdate(String sql) {
@@ -51,7 +51,7 @@ public abstract class BaseDatabaseDao implements IDatabaseDao {
 
 	@Override
 	public void pruneAllTables() {
-		LOGGER.debug("Pruning all tables");
+		LOGGER.debug("Pruning all tables: {}", allTables);
 		for (String table : allTables) {
 			executeUpdate("DELETE FROM " + table);
 		}
