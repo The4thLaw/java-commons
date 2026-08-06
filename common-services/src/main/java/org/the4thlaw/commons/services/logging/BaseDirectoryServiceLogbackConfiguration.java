@@ -45,9 +45,9 @@ import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
  * To install your custom configurator to your project, add a provider-configuration file to the following path:
  * </p>
  *
- * <pre>
- * <tt>META-INF/services/ch.qos.logback.classic.spi.Configurator</tt>
- * </pre>
+ * <p>
+ * <code>META-INF/services/ch.qos.logback.classic.spi.Configurator</code>
+ * </p>
  *
  * <p>
  * This provider-configuration file should contain a line with the fully qualified class name of your tyler

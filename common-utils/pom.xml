@@ -22,6 +22,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.the4thlaw</groupId>
+			<artifactId>common-model</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 		</dependency>

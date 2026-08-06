@@ -8,7 +8,9 @@ public enum CommonErrorCode implements ErrorCode {
 	/** The system encountered a parse error during export. */
 	EXPORT_XML_ERROR(16002),
 	/** Generic I/O operation error. */
-	IO_GENERIC_ERROR(20000);
+	IO_GENERIC_ERROR(20000),
+	/** There was an issue during a file compression. */
+	IO_COMPRESSION_ERROR(20001);
 
 	private final int numericCode;
 
