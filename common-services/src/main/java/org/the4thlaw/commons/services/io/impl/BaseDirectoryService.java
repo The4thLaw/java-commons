@@ -94,7 +94,7 @@ public abstract class BaseDirectoryService implements IDirectoryService {
 
 	@Override
 	public final Path getImagesDirectory() {
-		return create(getImagesDirectory());
+		return create(getImagesDirectoryPath());
 	}
 
 	protected Path getImagesDirectoryPath() {
