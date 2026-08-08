@@ -1,6 +1,8 @@
 package org.the4thlaw.commons.exception;
 
 public enum CommonErrorCode implements ErrorCode {
+	/** This version of the schema is not supported by the application. */
+	IMPORT_WRONG_SCHEMA(11004),
 	/** The system encountered an I/O error during export. */
 	EXPORT_IO_ERROR(16000),
 	/** An assumption about the database could not be met. */
