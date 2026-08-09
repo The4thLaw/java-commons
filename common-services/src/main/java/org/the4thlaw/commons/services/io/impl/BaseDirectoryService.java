@@ -10,8 +10,11 @@ import org.the4thlaw.commons.exception.CommonRuntimeException;
 import org.the4thlaw.commons.services.io.DirectoryException;
 import org.the4thlaw.commons.services.io.IDirectoryService;
 import org.the4thlaw.commons.services.io.StandardDirectory;
+import org.the4thlaw.commons.utils.io.FileUtils;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base class for directory services, providing utilities and reference implementations.
@@ -19,6 +22,7 @@ import org.apache.commons.lang3.SystemUtils;
  * @since 1.5
  */
 public abstract class BaseDirectoryService implements IDirectoryService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(BaseDirectoryService.class);
 	protected static final Path HOME = Path.of(SystemUtils.USER_HOME);
 
 	protected final String appName;
@@ -144,16 +148,29 @@ public abstract class BaseDirectoryService implements IDirectoryService {
 		return getCacheDirectory().resolve("thumbnails");
 	}
 
-	/**
-	 * Creates a temporary file in the specified directory. The file is marked as to be deleted on exit.
-	 *
-	 * @param prefix The prefix string to be used in generating the file's name; must be at least three characters long
-	 * @param suffix The suffix string to be used in generating the file's name; may be <code>null</code>, in which case
-	 *            the suffix <code>".tmp"</code> will be used
-	 * @param directory The directory in which the file is to be created, or <code>null</code> if the default
-	 *            temporary-file directory is to be used
-	 * @return The created file.
-	 */
+	@Override
+	public void clearCache() {
+		LOGGER.debug("Clearing cache");
+		clearDirectory(getCacheDirectory());
+	}
+
+	@Override
+	public void clearThumbnails() {
+		LOGGER.debug("Clearing thumbnail cache");
+		clearDirectory(getThumbnailsDirectory());
+	}
+
+	protected void clearDirectory(Path directory) {
+		FileUtils.deleteDirectoryQuietly(directory);
+		try {
+			Files.createDirectories(directory);
+			LOGGER.debug("Recreated directory at {}", directory);
+		} catch (IOException e) {
+			LOGGER.warn("Failed to create directory {}", directory, e);
+		}
+	}
+
+	@Override
 	public Path createTempFile(String prefix, String suffix, Path directory) {
 		if (directory == null) {
 			directory = getTempDirectory();
@@ -167,5 +184,14 @@ public abstract class BaseDirectoryService implements IDirectoryService {
 		}
 		temp.toFile().deleteOnExit();
 		return temp;
+	}
+
+	@Override
+	public Path createTempDirectory(String prefix) {
+		try {
+			return Files.createTempDirectory(getTempDirectory(), prefix);
+		} catch (IOException e) {
+			throw new CommonRuntimeException(CommonErrorCode.IO_GENERIC_ERROR, e);
+		}
 	}
 }

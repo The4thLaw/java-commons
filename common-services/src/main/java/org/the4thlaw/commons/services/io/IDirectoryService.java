@@ -45,6 +45,13 @@ public interface IDirectoryService {
 	/** Gets the {@link StandardDirectory#THUMBNAILS} directory. */
 	Path getThumbnailsDirectory();
 
+	/** Clears the contents of the cache directory. */
+	void clearCache();
+
+	/** Clears the contents of the thumbnail directory. */
+	void clearThumbnails();
+
+
 	/**
 	 * Creates a temporary file in the application temporary directory. The file is marked as to be deleted on exit.
 	 *
@@ -78,4 +85,12 @@ public interface IDirectoryService {
 	 * @return The created file.
 	 */
 	Path createTempFile(String prefix, String suffix, Path directory);
+
+	/**
+	 * Creates a temporary directory in {@link #getTempDirectory()}.
+	 * 
+	 * @param prefix The directory name prefix.
+	 * @return The path to the created directory.
+	 */
+	Path createTempDirectory(String prefix);
 }
