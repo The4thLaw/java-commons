@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
 import java.util.zip.ZipOutputStream;
 
@@ -38,10 +39,12 @@ public abstract class BaseExportService implements IExportService {
 	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	private final List<IExporter> exporters = new Vector<>();
+	private final String appName;
 	private final IDirectoryService directoryService;
 	private final Path exportDirectory;
 
-	public BaseExportService(IDirectoryService directoryService) {
+	public BaseExportService(String appName, IDirectoryService directoryService) {
+		this.appName = appName.toLowerCase(Locale.ROOT);
 		this.directoryService = directoryService;
 		exportDirectory = directoryService.getExportDirectory();
 	}
@@ -56,7 +59,7 @@ public abstract class BaseExportService implements IExportService {
 		// It's not a issue at the moment.
 
 		IExporter exporter = exporters.get(0);
-		String baseExportFileName = "demyo_" + LocalDate.now().format(DATE_FORMAT) + ".";
+		String baseExportFileName = appName + "_" + LocalDate.now().format(DATE_FORMAT) + ".";
 
 		Path libraryExport = exporter.export();
 		LOGGER.debug("Data export complete");
@@ -67,14 +70,14 @@ public abstract class BaseExportService implements IExportService {
 
 		LOGGER.debug("Adding resources to export");
 		// Build the ZIP file including all resources
-		Path zipFile = directoryService.createTempFile("demyo-export-archive-",
+		Path zipFile = directoryService.createTempFile(appName + "-export-archive-",
 				"." + exporter.getExtension(true), exportDirectory);
 
 		try (OutputStream fos = Files.newOutputStream(zipFile);
 				BufferedOutputStream bos = new BufferedOutputStream(fos);
 				ZipOutputStream zos = new ZipOutputStream(bos)) {
 			// The file inside the archive must always have the same name to be imported back
-			ZipUtils.compress(libraryExport, "demyo." + exporter.getExtension(false), zos);
+			ZipUtils.compress(libraryExport, appName + "." + exporter.getExtension(false), zos);
 			ZipUtils.compress(directoryService.getImagesDirectory(), "images", zos);
 		} catch (IOException | RuntimeException e) {
 			LOGGER.warn("Failed to export", e);
