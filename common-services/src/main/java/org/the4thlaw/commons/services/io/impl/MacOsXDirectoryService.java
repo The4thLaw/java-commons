@@ -9,6 +9,10 @@ import java.nio.file.Path;
  */
 public class MacOsXDirectoryService extends BaseDirectoryService {
 
+    /**
+	 * Creates a new service instance.
+	 * @param appName The application name.
+	 */
     public MacOsXDirectoryService(String appName) {
        super(appName);
     }

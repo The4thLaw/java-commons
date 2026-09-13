@@ -22,6 +22,10 @@ public class XdgDirectoryService extends BaseDirectoryService {
 	private static record XdgData(String variable, Path defaultValue) {
 	}
 
+	/**
+	 * Creates a new service instance.
+	 * @param appName The application name.
+	 */
 	public XdgDirectoryService(String appName) {
 		super(appName.toLowerCase(Locale.ROOT));
 	}

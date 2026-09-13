@@ -1,6 +1,18 @@
 package org.the4thlaw.commons.exception;
 
+/**
+ * Error codes for the common exception.
+ * @since 1.5
+ */
 public enum CommonErrorCode implements ErrorCode {
+	/** This import format is not supported. */
+	IMPORT_FORMAT_NOT_SUPPORTED(11000),
+	/** The system encountered an I/O error during import. */
+	IMPORT_IO_ERROR(11001),
+	/** The system encountered a parse error during import. */
+	IMPORT_PARSE_ERROR(11002),
+	/** The system encountered an error while restoring the images. */
+	IMPORT_IMAGES_ERROR(11003),
 	/** This version of the schema is not supported by the application. */
 	IMPORT_WRONG_SCHEMA(11004),
 	/** The system encountered an I/O error during export. */

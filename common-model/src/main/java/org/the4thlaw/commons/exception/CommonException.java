@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * The4thLaw commons standard exception.
+ * @since 1.5
  */
 public class CommonException extends Exception implements ICommonException  {
 	private final ErrorCode code;

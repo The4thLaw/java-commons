@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * Base implementation of an export services.
+ * Base implementation of an export service.
  * <p>
  * This class stores all data by respecting the contract of the provided {@link IDirectoryService}
  * </p>

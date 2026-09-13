@@ -9,6 +9,10 @@ import org.apache.commons.lang3.SystemUtils;
  * @since 1.5
  */
 public class WindowsDirectoryService extends RootedDirectoryService {
+	/**
+	 * Creates a new service instance.
+	 * @param appName The application name.
+	 */
     public WindowsDirectoryService(String appName) {
         super(appName);
     }

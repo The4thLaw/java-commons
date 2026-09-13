@@ -13,6 +13,10 @@ import java.nio.file.Path;
  */
 public class PortableDirectoryService extends RootedDirectoryService {
 
+	/**
+	 * Creates a new service instance.
+	 * @param appName The application name.
+	 */
 	public PortableDirectoryService(Path root, String appName) {
 		super(root, appName);
 	}

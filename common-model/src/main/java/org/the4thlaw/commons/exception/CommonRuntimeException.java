@@ -2,6 +2,7 @@ package org.the4thlaw.commons.exception;
 
 /**
  * The4thLaw commons unchecked exception.
+ * @since 1.5
  */
 public class CommonRuntimeException extends RuntimeException implements ICommonException {
 	private final ErrorCode code;

@@ -13,6 +13,10 @@ import org.apache.commons.lang3.SystemUtils;
 public class RootedDirectoryService extends BaseDirectoryService {
     private final Path root;
 
+    /**
+	 * Creates a new service instance.
+	 * @param appName The application name.
+	 */
     public RootedDirectoryService(String appName) {
         super(appName);
 
