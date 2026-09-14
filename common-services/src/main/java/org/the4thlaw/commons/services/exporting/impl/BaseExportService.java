@@ -20,7 +20,6 @@ import org.the4thlaw.commons.services.exporting.IExporter;
 import org.the4thlaw.commons.services.io.IDirectoryService;
 import org.the4thlaw.commons.utils.io.ZipUtils;
 
-import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
@@ -49,7 +48,7 @@ public abstract class BaseExportService implements IExportService {
 		exportDirectory = directoryService.getExportDirectory();
 	}
 
-	public void registerExporter(@NotNull IExporter exporter) {
+	public void registerExporter(IExporter exporter) {
 		LOGGER.debug("Registering exporter of type: {}", exporter.getClass().getCanonicalName());
 		exporters.add(exporter);
 	}

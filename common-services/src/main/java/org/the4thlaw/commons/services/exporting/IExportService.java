@@ -2,6 +2,8 @@ package org.the4thlaw.commons.services.exporting;
 
 import org.the4thlaw.commons.exception.CommonException;
 
+import jakarta.validation.constraints.NotNull;
+
 /**
  * This service allows exporting app data to various formats.
  * <p>
@@ -17,7 +19,7 @@ public interface IExportService {
 	 *
 	 * @param exporter The exporter to register.
 	 */
-	void registerExporter(IExporter exporter);
+	void registerExporter(@NotNull IExporter exporter);
 
 	/**
 	 * Exports the library.

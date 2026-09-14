@@ -18,7 +18,6 @@ import org.the4thlaw.commons.services.importing.IImporter;
 import org.the4thlaw.commons.services.io.IDirectoryService;
 import org.the4thlaw.commons.utils.io.FileUtils;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +53,7 @@ public abstract class BaseImportService<D extends IDatabaseDao> implements IImpo
 	}
 
 	@Override
-	public void importFile(@NotEmpty String originalFilename, @NotNull InputStream content) throws CommonException {
+	public void importFile(String originalFilename, InputStream content) throws CommonException {
 		Path importFile = null;
 		OutputStream fos = null;
 		BufferedOutputStream bos = null;

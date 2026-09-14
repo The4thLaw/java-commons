@@ -4,6 +4,9 @@ import java.io.InputStream;
 
 import org.the4thlaw.commons.exception.CommonException;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 /**
  * This service allows importing app data to various formats.
  * <p>
@@ -27,6 +30,6 @@ public interface IImportService {
 	 * @param content The uploaded content.
 	 * @throws CommonException In case of error during import.
 	 */
-	void importFile(String originalFilename, InputStream content) throws CommonException;
+	void importFile(@NotEmpty String originalFilename, @NotNull InputStream content) throws CommonException;
 
 }
