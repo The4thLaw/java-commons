@@ -26,6 +26,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public abstract class BaseDatabaseDao implements IDatabaseDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseDatabaseDao.class);
 
+	private final String schemaVersionTable;
 	private final String[] entityTables;
 	private final List<String> allTables;
 	private final EntityManager entityManager;
@@ -33,6 +34,7 @@ public abstract class BaseDatabaseDao implements IDatabaseDao {
 
 	protected BaseDatabaseDao(String schemaVersionTable, String[] entityTables, String[] nonEntityTables,
 			EntityManager entityManager, DataSource dataSource) {
+		this.schemaVersionTable = schemaVersionTable;
 		this.entityTables = entityTables;
 		this.entityManager = entityManager;
 
@@ -107,7 +109,9 @@ public abstract class BaseDatabaseDao implements IDatabaseDao {
 	@Override
 	public int getSchemaVersion() {
 		Integer version = jdbcTemplate.queryForObject(
-				"select \"version\" from \"schema_version\" order by \"installed_rank\" desc LIMIT 1", Integer.class);
+				"select \"version\" from \"" + schemaVersionTable
+						+ "\" order by \"installed_rank\" desc LIMIT 1",
+				Integer.class);
 		if (version == null) {
 			throw new PersistenceException("Failed to get the schema version");
 		}
