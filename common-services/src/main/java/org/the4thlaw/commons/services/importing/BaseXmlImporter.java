@@ -95,7 +95,7 @@ public abstract class BaseXmlImporter<D extends IDatabaseDao> implements IImport
 
 			// Extract if needed
 			String originalFilenameLc = originalFilename.toLowerCase();
-			boolean isArchive = originalFilenameLc.endsWith(".dea");
+			boolean isArchive = originalFilenameLc.endsWith("." + getZipExtension());
 
 			Path xmlFile;
 			if (isArchive) {
