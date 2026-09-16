@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -126,7 +127,7 @@ public abstract class BaseXmlExporter implements IExporter {
 		xsw.writeStartElement("meta");
 
 		xsw.writeEmptyElement("version");
-		xsw.writeAttribute(appName, appVersion);
+		xsw.writeAttribute(appName.toLowerCase(Locale.ROOT), appVersion);
 		xsw.writeAttribute("schema", String.valueOf(databaseDao.getSchemaVersion()));
 
 		xsw.writeEmptyElement("counts");
