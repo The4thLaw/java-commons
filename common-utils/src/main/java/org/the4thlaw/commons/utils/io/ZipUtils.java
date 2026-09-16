@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.the4thlaw.commons.exception.CommonErrorCode;
@@ -28,6 +29,21 @@ public final class ZipUtils {
 
     private ZipUtils() {
 
+    }
+
+    /**
+     * Checks if a file is a ZIP file.
+     * 
+     * @param source The path to the file to check.
+     * @return <code>true</code> if the file is a ZIP.
+     * @since 1.5
+     */
+    public static boolean isZipFile(Path source) {
+        try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(source))) {
+            return zis.getNextEntry() != null;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     /**

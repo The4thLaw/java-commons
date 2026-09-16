@@ -58,7 +58,7 @@ public abstract class BaseXmlImporter<D extends IDatabaseDao> implements IImport
 			return Sniffer.sniffFile(file, getSniffPattern());
 		}
 
-		return originalFilenameLc.endsWith(getZipExtension());
+		return originalFilenameLc.endsWith(getZipExtension()) && ZipUtils.isZipFile(file);
 	}
 
 	/**
