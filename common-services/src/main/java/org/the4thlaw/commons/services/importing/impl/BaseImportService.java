@@ -18,7 +18,6 @@ import org.the4thlaw.commons.services.importing.IImporter;
 import org.the4thlaw.commons.services.io.IDirectoryService;
 import org.the4thlaw.commons.utils.io.FileUtils;
 
-import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
@@ -47,7 +46,7 @@ public abstract class BaseImportService<D extends IDatabaseDao> implements IImpo
 	}
 
 	@Override
-	public void registerImporter(@NotNull IImporter importer) {
+	public void registerImporter(IImporter importer) {
 		LOGGER.debug("Registering importer of type: {}", importer.getClass().getCanonicalName());
 		importers.add(importer);
 	}

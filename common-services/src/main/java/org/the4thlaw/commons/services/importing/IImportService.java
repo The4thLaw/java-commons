@@ -21,7 +21,7 @@ public interface IImportService {
 	 *
 	 * @param importer The importer to register.
 	 */
-	void registerImporter(IImporter importer);
+	void registerImporter(@NotNull IImporter importer);
 
 	/**
 	 * Performs the import of a file, assuming a supporting importer has been registered.
