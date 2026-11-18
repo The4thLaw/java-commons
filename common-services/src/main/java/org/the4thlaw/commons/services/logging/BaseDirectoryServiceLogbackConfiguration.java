@@ -15,6 +15,7 @@ import ch.qos.logback.classic.tyler.TylerConfiguratorBase;
 import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Standardized logback configuration that is aware of the chosen directory service.
@@ -78,6 +79,7 @@ public abstract class BaseDirectoryServiceLogbackConfiguration extends TylerConf
     protected final String appName;
     protected final String appNameLc;
     protected final String appLogLevel;
+    protected final String thirdPartyLogLevel;
     protected final String[] firstPartyPackages;
     protected final Path logDirectory;
 
@@ -93,7 +95,6 @@ public abstract class BaseDirectoryServiceLogbackConfiguration extends TylerConf
             String... firstPartyPackages) {
         this.appName = appName;
         this.appNameLc = appName.toLowerCase(Locale.ROOT);
-        this.appLogLevel = appLogLevel;
         this.firstPartyPackages = firstPartyPackages;
         IDirectoryService directoryService = new DirectoryServiceFactory()
                 .withAppName(appName)
@@ -101,6 +102,19 @@ public abstract class BaseDirectoryServiceLogbackConfiguration extends TylerConf
                 .autoDetectLegacy()
                 .build();
         this.logDirectory = directoryService.getLogsDirectory();
+
+        String appLogLevelOverride = System.getProperty(appNameLc + ".logging.level.core");
+        if (StringUtils.isNotBlank(appLogLevelOverride)) {
+            this.appLogLevel = appLogLevelOverride;
+        } else {
+            this.appLogLevel = appLogLevel;
+        }
+        String thirdPartyLogLevelOverride = System.getProperty(appNameLc + ".logging.level.3rdParty");
+        if (StringUtils.isNotBlank(thirdPartyLogLevelOverride)) {
+            this.thirdPartyLogLevel = thirdPartyLogLevelOverride;
+        } else {
+            this.thirdPartyLogLevel = "WARN";
+        }
     }
 
     protected RollingFileAppender<ILoggingEvent> createFileAppender(String name) {
@@ -169,7 +183,7 @@ public abstract class BaseDirectoryServiceLogbackConfiguration extends TylerConf
             firstLogger.addAppender(appenderApp);
         }
 
-        Logger loggerROOT = setupLogger("ROOT", "WARN", null);
+        Logger loggerROOT = setupLogger("ROOT", thirdPartyLogLevel, null);
         loggerROOT.addAppender(appenderConsole);
         loggerROOT.addAppender(appender3rdParty);
 
