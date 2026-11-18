@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.function.Function;
 
 import org.the4thlaw.commons.services.io.impl.MacOsXDirectoryService;
@@ -35,6 +36,9 @@ public class DirectoryServiceFactory {
 
     public DirectoryServiceFactory withAppName(String appName) {
         this.appName = appName;
+        if (systemProperty == null) {
+            systemProperty = appName.toLowerCase(Locale.ROOT) + ".data.directory";
+        }
         return this;
     }
 
@@ -118,7 +122,7 @@ public class DirectoryServiceFactory {
         }
 
         IDirectoryService service = implementation.apply(appName);
-        LOGGER.info("Directory service class is {}", service.getClass().getCanonicalName());
+        LOGGER.info("Directory service is {}", service);
         return service;
     }
 }

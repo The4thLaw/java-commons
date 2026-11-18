@@ -13,6 +13,8 @@ import org.the4thlaw.commons.services.io.StandardDirectory;
 import org.the4thlaw.commons.utils.io.FileUtils;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -193,5 +195,21 @@ public abstract class BaseDirectoryService implements IDirectoryService {
 		} catch (IOException e) {
 			throw new CommonRuntimeException(CommonErrorCode.IO_GENERIC_ERROR, e);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("configurationDirectoryPath", getConfigurationDirectoryPath())
+				.append("cacheDirectoryPath", getCacheDirectoryPath())
+				.append("dataDirectoryPath", getDataDirectoryPath())
+				.append("exportDirectoryPath", getExportDirectoryPath())
+				.append("imagesDirectoryPath", getImagesDirectoryPath())
+				.append("logsDirectoryPath", getLogsDirectoryPath())
+				.append("runtimeDirectoryPath", getRuntimeDirectoryPath())
+				.append("stateDirectoryPath", getStateDirectoryPath())
+				.append("tempDirectoryPath", getTempDirectoryPath())
+				.append("thumbnailsDirectoryPath", getThumbnailsDirectoryPath())
+				.build();
 	}
 }
