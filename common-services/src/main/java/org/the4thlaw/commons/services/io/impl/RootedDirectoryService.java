@@ -45,8 +45,11 @@ public class RootedDirectoryService extends BaseDirectoryService {
     }
 
     public RootedDirectoryService(Path root, String appName) {
+        this(root, appName, SystemUtils.IS_OS_WINDOWS ? appName : "." + appName);
+    }
+
+    public RootedDirectoryService(Path root, String appName, String dirName) {
         super(appName);
-        String dirName = SystemUtils.IS_OS_WINDOWS ? this.appName : "." + this.appName;
         this.root = root.resolve(dirName);
     }
 

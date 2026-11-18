@@ -18,7 +18,7 @@ public class PortableDirectoryService extends RootedDirectoryService {
 	 * @param appName The application name.
 	 */
 	public PortableDirectoryService(Path root, String appName) {
-		super(root, appName);
+		super(root, appName, appName.toLowerCase());
 	}
 	
 	protected Path getTempDirectoryPath() {
